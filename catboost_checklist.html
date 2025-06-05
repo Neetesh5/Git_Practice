@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CatBoost Model Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #e67e22;
+      text-align: center;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: green;
+    }
+    .avoid li::before {
+      content: "❌";
+      color: red;
+    }
+    .tip {
+      background: #fef9e7;
+      padding: 10px;
+      border-left: 5px solid #f1c40f;
+      margin: 10px 0;
+    }
+    code {
+      background: #ecf0f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ CatBoost Model Checklist</h1>
+    <p><em>A visual guide to know when and how to use CatBoost in Machine Learning</em></p>
+
+    <h2>✅ Use CatBoost When:</h2>
+    <ul>
+      <li>Tabular Data — Works great for structured/tabular datasets (classification or regression).</li>
+      <li>Many Categories — Handles categorical variables very well.</li>
+      <li>Missing Values — Robust handling of missing data.</li>
+      <li>Non-linear Relationships — Captures complex and non-linear relationships.</li>
+      <li>Accuracy — Often provides state-of the-art performance.</li>
+      <li>Small Datasets — Performs well on small datasets, both in training and prediction.</li>
+      <li>Large Datasets — Efficient and scalable implementation.</li>
+      <li>Time Series & Forecasting — Can be used for time series forecasting problems.</li>
+      <li>Default Parameters Work Well — Performs well out-of-the-box with minimal tuning.</li>
+    </ul>
+
+    <h2 class="avoid">❌ Avoid CatBoost If:</h2>
+    <ul class="avoid">
+      <li>Mostly unstructured data (images, text, audio, etc.)</li>
+      <li>Use specialized models (CNNs for images, RNNs for text/audio)</li>
+      <li>Preprocessing required</li>
+      <li>Interpretability requirements may make decisions less interpretable</li>
+      <li>Computationally expensive</li>
+    </ul>
+
+    <h2>💡 Best Practices:</h2>
+    <div class="tip">Handle categorical features without feature preparation</div>
+    <div class="tip">Use the best training/testing split ratio based on your dataset</div>
+    <div class="tip">Use <code>CatBoostClassifier</code> or <code>CatBoostRegressor</code> classes</div>
+    <div class="tip">Apply cross-validation for model tuning/selection</div>
+    <div class="tip">Tune hyperparameters using grid search/random search methods</div>
+    <div class="tip">Monitor overfitting by tracking learning curves during training</div>
+
+    <h2>🧠 CatBoost with Hyperparameter Tuning (Python Example)</h2>
+    <p>Below is an example of how to deploy CatBoost with hyperparameter tuning using GridSearchCV. This example uses the Breast Cancer dataset from sklearn.</p>
+    <pre><code>
+import numpy as np
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.metrics import accuracy_score, classification_report
+from catboost import CatBoostClassifier
+from sklearn.datasets import load_breast_cancer
+
+# Load dataset
+data = load_breast_cancer()
+X = data.data
+y = data.target
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Initialize CatBoostClassifier
+model = CatBoostClassifier(verbose=0)
+
+# Define hyperparameters to tune
+param_grid = {
+    'iterations': [100, 200, 300],
+    'depth': [4, 6, 8],
+    'learning_rate': [0.01, 0.1, 0.2]
+}
+
+# Initialize GridSearchCV
+grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3, scoring='accuracy')
+
+# Fit GridSearchCV
+grid_search.fit(X_train, y_train)
+
+# Get best parameters and best model
+best_params = grid_search.best_params_
+best_model = grid_search.best_estimator_
+
+# Predict on test set
+y_pred = best_model.predict(X_test)
+
+# Evaluate model
+accuracy = accuracy_score(y_test, y_pred)
+report = classification_report(y_test, y_pred)
+
+print(f"Best Parameters: {best_params}")
+print(f"Test Accuracy: {accuracy * 100:.2f}%")
+print("Classification Report:")
+print(report)
+    </code></pre>
+  </div>
+</body>
+</html>

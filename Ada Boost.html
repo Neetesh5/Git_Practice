@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AdaBoost Model Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #e67e22;
+      text-align: center;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: green;
+    }
+    .avoid li::before {
+      content: "❌";
+      color: red;
+    }
+    .tip {
+      background: #fef9e7;
+      padding: 10px;
+      border-left: 5px solid #f1c40f;
+      margin: 10px 0;
+    }
+    code {
+      background: #ecf0f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ AdaBoost Model Checklist</h1>
+    <p><em>A visual guide for when and how to use AdaBoost in Machine Learning</em></p>
+
+    <h2>✅ Use AdaBoost When:</h2>
+    <ul>
+      <li>Working with structured/tabular data</li>
+      <li>Using weak learners like shallow decision trees</li>
+      <li>Trying to reduce bias in underfitting models</li>
+      <li>Data has few outliers and is relatively clean</li>
+      <li>Solving binary or multi-class classification problems</li>
+      <li>Interpretability is important</li>
+    </ul>
+
+    <h2 class="avoid">❌ Avoid AdaBoost If:</h2>
+    <ul class="avoid">
+      <li>Training time is a major constraint</li>
+      <li>Using high variance learners without regularization</li>
+      <li>Data is noisy or contains many outliers</li>
+      <li>You need probabilistic outputs</li>
+      <li>You require highly non-linear decision boundaries</li>
+    </ul>
+
+    <h2>💡 Best Practices:</h2>
+    <div class="tip">Use <code>DecisionTreeClassifier(max_depth=1)</code> as the base estimator</div>
+    <div class="tip">Tune <code>n_estimators</code> and <code>learning_rate</code> for optimal performance</div>
+    <div class="tip">Use <code>feature_importances_</code> from scikit-learn for insights</div>
+    <div class="tip">Avoid overfitting by setting <code>learning_rate &lt; 0.5</code></div>
+    <div class="tip">Handle class imbalance with techniques like SMOTE or class weights</div>
+  </div>
+</body>
+</html>

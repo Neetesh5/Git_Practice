@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ML Algorithm Testing & Validation Cheat Sheet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;600;400&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e6f7ff 100%);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    .container {
+      background: #fff;
+      max-width: 1100px;
+      margin: 32px auto 32px auto;
+      border-radius: 22px;
+      box-shadow: 0 8px 36px rgba(44,62,80,0.13), 0 2px 10px rgba(44,62,80,0.09);
+      padding: 46px 38px 36px 38px;
+      border-left: 12px solid #22baff;
+      position: relative;
+      overflow: hidden;
+    }
+    h1 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      color: #22baff;
+      font-size: 2.2rem;
+      margin-top: 0;
+      margin-bottom: 0.15em;
+      text-align: center;
+      letter-spacing: 1px;
+      font-weight: 800;
+      text-shadow: 0 2px 12px #e6f7ff;
+    }
+    .subtitle {
+      text-align: center;
+      color: #1273a7;
+      font-size: 1.18rem;
+      margin-bottom: 2em;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+    }
+    h2 {
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-size: 1.18rem;
+      color: #222;
+      border-left: 6px solid #22baff;
+      padding-left: 12px;
+      margin-bottom: 12px;
+      margin-top: 34px;
+      letter-spacing: 0.2px;
+      font-weight: 700;
+      background: linear-gradient(90deg, #e6f7ff 75%, #fff 100%);
+      border-radius: 7px;
+      line-height: 1.3;
+      box-shadow: 0 2px 10px rgba(34,186,255,0.07);
+    }
+    .section {
+      margin-bottom: 28px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 16px 0;
+    }
+    ul li {
+      margin: 0 0 8px 0;
+      position: relative;
+      padding-left: 32px;
+      font-size: 1.06rem;
+      line-height: 1.55;
+      background: linear-gradient(90deg,#f7fcff 70%,#fff 100%);
+      border-radius: 7px;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s;
+    }
+    ul li:before {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      font-size: 1.2rem;
+      content: "🧪";
+      color: #22baff;
+      filter: drop-shadow(0 1px 2px #a0e8ff);
+    }
+    code, pre {
+      font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', 'Courier', monospace;
+      font-size: 1.01rem;
+      background: #f5f7fa;
+      color: #0a3c6d;
+      padding: 0.13em 0.45em;
+      border-radius: 5px;
+    }
+    pre {
+      background: #f0f9ff;
+      border-left: 5px solid #22baff;
+      color: #0a3c6d;
+      padding: 9px 14px 9px 18px;
+      margin-bottom: 14px;
+      margin-top: 7px;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-size: 1.04rem;
+      box-shadow: 0 2px 8px rgba(34,186,255,0.07);
+    }
+    .tip {
+      background: linear-gradient(90deg,#e6f7ff 60%, #e0f7ff 100%);
+      color: #1273a7;
+      border-left: 6px solid #22baff;
+      padding: 10px 18px;
+      margin: 18px 0 12px 0;
+      font-size: 1.03rem;
+      border-radius: 7px;
+      font-weight: 500;
+    }
+    .criteria {
+      background: #eafff7;
+      border-left: 6px solid #009c6b;
+      border-radius: 8px;
+      padding: 8px 15px;
+      margin: 7px 0 10px 0;
+      color: #066d4e;
+      font-size: 1.02rem;
+      font-weight: 500;
+    }
+    .example {
+      background: #fffbe9;
+      border-left: 6px solid #ffe26f;
+      border-radius: 8px;
+      padding: 8px 15px;
+      margin: 0 0 13px 0;
+      color: #665100;
+      font-size: 1.02rem;
+      font-weight: 500;
+    }
+    .subsection {
+      font-size: 1.09rem;
+      color: #22baff;
+      font-family: 'Montserrat', Arial, sans-serif;
+      font-weight: 600;
+      margin: 20px 0 8px 0;
+    }
+    .footer {
+      text-align: center;
+      font-style: italic;
+      margin-top: 30px;
+      color: #22baff;
+      font-size: 1.13rem;
+      letter-spacing: .5px;
+      text-shadow: 0 1px 3px #e6f7ff;
+      padding-bottom: 8px;
+    }
+    @media (max-width: 900px) {
+      .container { padding: 12px 2vw 12px 2vw; }
+      h1 { font-size: 1.15rem; }
+      h2 { font-size: 1rem; }
+      pre { font-size: 0.97rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>ML Algorithm Testing & Validation Cheat Sheet</h1>
+    <div class="subtitle">All types of tests to perform on ML models &mdash; with Python code examples, desirable ranges, interpretations, and model-specific hyperparameter tuning</div>
+
+    <div class="section">
+      <h2>1. Data Splitting & Sampling</h2>
+      <ul>
+        <li>Train/test/validation split to avoid data leakage.</li>
+        <li>Stratified split for imbalanced classes.</li>
+        <li>Shuffle your data!</li>
+      </ul>
+      <pre>
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, stratify=y, random_state=42)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> 70-80% Train, 20-30% Test. <br>
+        <b>Interpretation:</b> Ensures fair, unbiased model evaluation.<br>
+      </div>
+      <div class="example">
+        <b>Example:</b> If you have 1000 samples, 800 for training, 200 for testing.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>2. Cross-Validation & Resampling</h2>
+      <ul>
+        <li>K-Fold, Stratified K-Fold, Leave-One-Out, Repeated CV.</li>
+        <li>Time-Series Split for temporal data.</li>
+      </ul>
+      <pre>
+from sklearn.model_selection import cross_val_score, StratifiedKFold, TimeSeriesSplit
+cv = StratifiedKFold(n_splits=5)
+scores = cross_val_score(model, X, y, cv=cv)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> 5 or 10 folds for K-Fold. <br>
+        <b>Interpretation:</b> More robust estimate of model performance.<br>
+      </div>
+      <div class="example">
+        <b>Example:</b> You get cross-validation scores: [0.87, 0.86, 0.89, 0.88, 0.87] &rarr; mean = 0.874
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>3. Model Evaluation Metrics</h2>
+      <ul>
+        <li>Classification: Accuracy, Precision, Recall, F1, ROC-AUC, PR-AUC, Confusion Matrix, Log Loss</li>
+        <li>Regression: MSE, RMSE, MAE, R², Adjusted R²</li>
+        <li>Clustering: Silhouette, Davies-Bouldin, ARI, NMI</li>
+      </ul>
+      <pre>
+# Classification
+from sklearn.metrics import (accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix)
+y_pred = model.predict(X_test)
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1:", f1_score(y_test, y_pred))
+print("ROC-AUC:", roc_auc_score(y_test, model.predict_proba(X_test)[:,1]))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+# Regression
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+print("RMSE:", mean_squared_error(y_test, y_pred, squared=False))
+print("MAE:", mean_absolute_error(y_test, y_pred))
+print("R²:", r2_score(y_test, y_pred))
+      </pre>
+      <div class="criteria">
+        <b>Desirable (Classification):</b> F1, ROC-AUC &gt; 0.8 (good), Accuracy &gt; 0.8 (if balanced) <br>
+        <b>Desirable (Regression):</b> R² close to 1, RMSE/MAE small relative to target range<br>
+        <b>Interpretation:</b> Higher is better for F1, ROC-AUC, R². Lower is better for RMSE/MAE.
+      </div>
+      <div class="example">
+        <b>Example:</b> F1 = 0.86, ROC-AUC = 0.91 (good); R² = 0.92 (explains 92% of variance)
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>4. Hyperparameter Tuning (Model-specific Strategies)</h2>
+      <ul>
+        <li>Use the best optimization approach for each model to maximize performance.</li>
+      </ul>
+
+      <div class="subsection">Random Forest / Decision Tree</div>
+      <pre>
+from sklearn.model_selection import RandomizedSearchCV
+param_grid = {
+    'max_depth': [3, 5, 10, None],
+    'min_samples_split': [2, 5, 10],
+    'n_estimators': [50, 100, 200]
+}
+search = RandomizedSearchCV(RandomForestClassifier(), param_grid, n_iter=10, cv=3)
+search.fit(X_train, y_train)
+print("Best params:", search.best_params_)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Use <b>RandomizedSearchCV</b> for efficiency, especially with many parameters.
+      </div>
+      <div class="example">
+        <b>Example:</b> Best params: {'max_depth': 10, 'min_samples_split': 2, 'n_estimators': 100}
+      </div>
+
+      <div class="subsection">XGBoost / LightGBM / CatBoost</div>
+      <pre>
+import optuna
+import xgboost as xgb
+def objective(trial):
+    params = {
+        'max_depth': trial.suggest_int('max_depth', 3, 10),
+        'learning_rate': trial.suggest_loguniform('learning_rate', 0.01, 0.2),
+        'n_estimators': trial.suggest_int('n_estimators', 50, 300),
+        'subsample': trial.suggest_uniform('subsample', 0.5, 1.0)
+    }
+    model = xgb.XGBClassifier(**params)
+    model.fit(X_train, y_train)
+    return model.score(X_valid, y_valid)
+
+study = optuna.create_study(direction="maximize")
+study.optimize(objective, n_trials=20)
+print("Best params:", study.best_params)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Use <b>Optuna</b> or <b>Bayesian optimization</b> for large, complex search spaces.
+      </div>
+      <div class="example">
+        <b>Example:</b> Best params: {'max_depth': 7, 'learning_rate': 0.07, 'n_estimators': 200, 'subsample': 0.9}
+      </div>
+
+      <div class="subsection">Logistic Regression / SVM / KNN</div>
+      <pre>
+from sklearn.model_selection import GridSearchCV
+param_grid = {
+    'C': [0.1, 1, 10], # regularization for SVM/Logistic
+    'kernel': ['linear', 'rbf'] # SVM specific
+}
+search = GridSearchCV(SVC(), param_grid, cv=3)
+search.fit(X_train, y_train)
+print("Best params:", search.best_params_)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Grid search works well for small, interpretable parameter grids.
+      </div>
+      <div class="example">
+        <b>Example:</b> Best params: {'C': 1, 'kernel': 'rbf'}
+      </div>
+
+      <div class="subsection">Neural Networks (MLP, Deep Learning)</div>
+      <pre>
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import RandomizedSearchCV
+
+def build_model(optimizer='adam', activation='relu'):
+    from keras.models import Sequential
+    from keras.layers import Dense
+    model = Sequential()
+    model.add(Dense(64, input_dim=X_train.shape[1], activation=activation))
+    model.add(Dense(1, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy', optimizer=optimizer, metrics=['accuracy'])
+    return model
+
+param_dist = {
+    'optimizer': ['adam', 'rmsprop'],
+    'activation': ['relu', 'tanh'],
+    'epochs': [10, 20],
+    'batch_size': [16, 32]
+}
+search = RandomizedSearchCV(KerasClassifier(build_fn=build_model, verbose=0), param_distributions=param_dist, n_iter=5, cv=3)
+search.fit(X_train, y_train)
+print("Best params:", search.best_params_)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Use <b>RandomizedSearchCV</b> for neural nets to speed up search; advanced users can use <b>Optuna</b>, <b>KerasTuner</b>, or <b>Ray Tune</b>.
+      </div>
+      <div class="example">
+        <b>Example:</b> Best params: {'optimizer': 'adam', 'activation': 'relu', 'epochs': 20, 'batch_size': 16}
+      </div>
+
+      <div class="tip">
+        <b>General tips:</b> <br>
+        - Always use cross-validation when tuning hyperparameters.<br>
+        - For very large datasets, consider subsampling or early stopping.<br>
+        - For highly imbalanced data, tune <code>class_weight</code> or <code>scale_pos_weight</code> as well!
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>5. Learning Curves & Validation Curves</h2>
+      <ul>
+        <li>Learning curve: Plots score vs train size. Validation curve: Score vs. hyperparameter.</li>
+      </ul>
+      <pre>
+from sklearn.model_selection import learning_curve, validation_curve
+import matplotlib.pyplot as plt
+train_sizes, train_scores, val_scores = learning_curve(model, X, y, cv=5)
+plt.plot(train_sizes, train_scores.mean(axis=1), label="Train")
+plt.plot(train_sizes, val_scores.mean(axis=1), label="Validation")
+plt.legend(); plt.show()
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Training and validation scores converge with more data.<br>
+        <b>Interpretation:</b> Large gap = overfitting, both low = underfitting.
+      </div>
+      <div class="example">
+        <b>Example:</b> If train=0.99, val=0.78 → overfitting; both ≈0.78 → good fit.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>6. Feature Importance & Model Explanation</h2>
+      <ul>
+        <li>Tree-based: <code>feature_importances_</code></li>
+        <li>Linear: <code>coef_</code></li>
+        <li>Permutation importance, SHAP, LIME, Partial Dependence Plots</li>
+      </ul>
+      <pre>
+# Tree-based
+importances = model.feature_importances_
+# Logistic
+coefs = model.coef_
+# SHAP
+import shap
+explainer = shap.Explainer(model, X_train)
+shap_values = explainer(X_test)
+shap.summary_plot(shap_values, X_test)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Top features align with domain intuition.<br>
+        <b>Interpretation:</b> Unexpected important features may indicate leakage or discovery!
+      </div>
+      <div class="example">
+        <b>Example:</b> Feature 'age' has highest importance for predicting insurance charges.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>7. Residual/Error Analysis</h2>
+      <ul>
+        <li>Regression: Plot residuals (should be random), Q-Q plot (should be straight line).</li>
+        <li>Classification: Analyze misclassified samples.</li>
+      </ul>
+      <pre>
+import matplotlib.pyplot as plt
+residuals = y_test - y_pred
+plt.scatter(y_pred, residuals)
+plt.axhline(0, color="red")
+plt.xlabel("Predicted"); plt.ylabel("Residuals"); plt.show()
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Residuals scattered randomly around zero.<br>
+        <b>Interpretation:</b> Patterns indicate model misses nonlinearity or heteroscedasticity.
+      </div>
+      <div class="example">
+        <b>Example:</b> If all residuals above 0 for high predictions → model underpredicts at high values.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>8. Durbin-Watson Statistic (Autocorrelation in Residuals)</h2>
+      <ul>
+        <li>Check for autocorrelation in regression residuals (important in time series).</li>
+      </ul>
+      <pre>
+from statsmodels.stats.stattools import durbin_watson
+dw = durbin_watson(residuals)
+print("Durbin-Watson:", dw)
+      </pre>
+      <div class="criteria">
+        <b>Desirable Range:</b> <span style="color:#009c6b;">1.5 – 2.5</span> (no autocorrelation)<br>
+        <b>Interpretation:</b> DW ≈ 2 → No autocorr. DW &lt; 2 → Positive autocorr. DW &gt; 2 → Negative autocorr.
+      </div>
+      <div class="example">
+        <b>Example:</b> DW = 0.9 (strong positive autocorrelation, likely a time series issue)<br>
+        DW = 2.1 (no autocorrelation, good)
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>9. Overfitting & Underfitting Checks</h2>
+      <ul>
+        <li>Compare train/test scores (large gap = overfitting, both low = underfitting)</li>
+      </ul>
+      <pre>
+print("Train Score:", model.score(X_train, y_train))
+print("Test Score:", model.score(X_test, y_test))
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Train and test scores are close and both high (≥0.8 for many tasks).<br>
+        <b>Interpretation:</b> Large gap = overfitting, both low = underfitting.
+      </div>
+      <div class="example">
+        <b>Example:</b> Train = 0.95, Test = 0.70 (overfit); Train = 0.72, Test = 0.71 (underfit).
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>10. Robustness & Stress Testing</h2>
+      <ul>
+        <li>Add noise, test on adversarial samples, shuffle columns/labels (sanity check).</li>
+      </ul>
+      <pre>
+import numpy as np
+X_test_noisy = X_test + np.random.normal(0, 0.1, X_test.shape)
+print("Accuracy on noisy data:", model.score(X_test_noisy, y_test))
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Model accuracy/performance should not drop drastically with small noise.<br>
+        <b>Interpretation:</b> Large drop = model too sensitive, may be brittle.
+      </div>
+      <div class="example">
+        <b>Example:</b> Accuracy drops from 0.86 (clean) to 0.83 (noisy) → robust. Drops to 0.60 → fragile!
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>11. Data Leakage & Bias Checks</h2>
+      <ul>
+        <li>Check that test data is never used in training/feature engineering.</li>
+        <li>Check for target leakage, data snooping, or look-ahead bias.</li>
+      </ul>
+      <pre>
+# Always split data BEFORE feature engineering!
+# Check correlations between early features and target
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> No leakage! Only train data for feature engineering.<br>
+        <b>Interpretation:</b> Leakage inflates test scores, gives false confidence.
+      </div>
+      <div class="example">
+        <b>Example:</b> Mistakenly using test data to impute missing values introduces leakage.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>12. Model Stability & Reproducibility</h2>
+      <ul>
+        <li>Set random seeds for reproducibility.</li>
+        <li>Test for consistent results across runs.</li>
+      </ul>
+      <pre>
+import numpy as np
+np.random.seed(42)
+import random
+random.seed(42)
+# For sklearn:
+# model = Model(random_state=42)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Results do not change much between runs.<br>
+        <b>Interpretation:</b> Randomness can mask true model skill if not fixed.
+      </div>
+      <div class="example">
+        <b>Example:</b> With random_state=42, model accuracy is always 0.86.
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>13. Fairness & Ethics Checks</h2>
+      <ul>
+        <li>Test for disparate impact, demographic parity, equal opportunity.</li>
+        <li>Check model bias across protected groups.</li>
+      </ul>
+      <pre>
+# pip install fairlearn
+from fairlearn.metrics import demographic_parity_difference
+demographic_parity_difference(y_test, y_pred, sensitive_features=group_labels)
+      </pre>
+      <div class="criteria">
+        <b>Desirable:</b> Difference close to 0 (no group is unfairly advantaged or disadvantaged).<br>
+        <b>Interpretation:</b> Large difference indicates potential bias.
+      </div>
+      <div class="example">
+        <b>Example:</b> Demographic parity difference = 0.03 (good). If 0.40 → strong bias!
+      </div>
+    </div>
+
+    <div class="footer">
+      *Keep this cheat sheet handy and refer before model deployment!<br>
+      <span style="color:#1273a7;">Test thoroughly, tune wisely, deploy confidently.</span>*
+    </div>
+  </div>
+</body>
+</html>

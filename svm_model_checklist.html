@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVM Model Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    h2 {
+      color: #34495e;
+      margin-top: 30px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: green;
+    }
+    .avoid li::before {
+      content: "❌";
+      color: red;
+    }
+    .tip {
+      background: #fef9e7;
+      padding: 10px;
+      border-left: 5px solid #f1c40f;
+      margin: 10px 0;
+    }
+    code {
+      background: #ecf0f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚙️ SVM Model Checklist</h1>
+    <p><em>A visual guide for when and how to use Support Vector Machines in Machine Learning</em></p>
+
+    <h2>✅ Use SVM When:</h2>
+    <ul>
+      <li>Clear margin of separation between classes</li>
+      <li>High-dimensional feature space</li>
+      <li>Small to medium-sized datasets</li>
+      <li>Classification or regression tasks</li>
+      <li>Non-linear boundaries (using kernel trick)</li>
+      <li>Few outliers in the data</li>
+    </ul>
+
+    <h2 class="avoid">❌ Avoid SVM If:</h2>
+    <ul class="avoid">
+      <li>Dataset is very large (slow training)</li>
+      <li>Features are noisy or not scaled</li>
+      <li>Classes are highly overlapping</li>
+      <li>Interpretability is critical</li>
+      <li>Real-time or very fast predictions are required</li>
+    </ul>
+
+    <h2>💡 Best Practices:</h2>
+    <div class="tip">Standardize features before training</div>
+    <div class="tip">Use <code>GridSearchCV</code> or <code>RandomizedSearchCV</code> for hyperparameter tuning</div>
+    <div class="tip">Try different kernels (linear, RBF, poly) and tune <code>C</code> and <code>gamma</code></div>
+    <div class="tip">Use feature scaling for large feature sets</div>
+    <div class="tip">Handle imbalanced data using class weights</div>
+
+    <h2>🧪 Pre-run Tests and Checks:</h2>
+    <ul>
+      <li>Check for missing values and handle them</li>
+      <li>Standardize or normalize features</li>
+      <li>Visualize class separation if possible</li>
+      <li>Split data into training and testing sets</li>
+      <li>Use cross-validation for model evaluation</li>
+    </ul>
+
+    <h2>🧠 Python Example with Hyperparameter Tuning:</h2>
+    <pre><code>
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report
+
+# Load dataset
+data = load_breast_cancer()
+X, y = data.data, data.target
+
+# Standardize features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Define model and hyperparameters
+model = SVC()
+param_grid = {
+    'C': [0.1, 1, 10],
+    'kernel': ['linear', 'rbf', 'poly'],
+    'gamma': ['scale', 'auto']
+}
+
+# Grid search
+grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+# Evaluate
+best_model = grid_search.best_estimator_
+y_pred = best_model.predict(X_test)
+print(classification_report(y_test, y_pred))
+    </code></pre>
+  </div>
+</body>
+</html>

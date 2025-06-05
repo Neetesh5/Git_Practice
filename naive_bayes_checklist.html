@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Naive Bayes Model Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #e67e22;
+      text-align: center;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-top: 30px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: green;
+    }
+    .avoid li::before {
+      content: "❌";
+      color: red;
+    }
+    .tip {
+      background: #fef9e7;
+      padding: 10px;
+      border-left: 5px solid #f1c40f;
+      margin: 10px 0;
+    }
+    code {
+      background: #ecf0f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>⚡ Naive Bayes Model Checklist</h1>
+    <p><em>A visual guide for when and how to use Naive Bayes in Machine Learning</em></p>
+
+    <h2>✅ Use Naive Bayes When:</h2>
+    <ul>
+      <li>Working with text data</li>
+      <li>Using bag-of-words or TF-IDF features</li>
+      <li>Trying to reduce bias in underfitting models</li>
+      <li>Data is relatively clean and well-preprocessed</li>
+      <li>Solving binary or multi-class classification problems</li>
+      <li>Interpretability is important</li>
+    </ul>
+
+    <h2 class="avoid">❌ Avoid Naive Bayes If:</h2>
+    <ul class="avoid">
+      <li>Training time is a major constraint</li>
+      <li>Using high variance learners without regularization</li>
+      <li>Data is noisy or contains many outliers</li>
+      <li>You need probabilistic outputs</li>
+      <li>You require highly non-linear decision boundaries</li>
+    </ul>
+
+    <h2>💡 Best Practices:</h2>
+    <div class="tip">Use <code>CountVectorizer</code> or <code>TfidfVectorizer</code> for text feature extraction</div>
+    <div class="tip">Tune <code>alpha</code> and <code>fit_prior</code> for optimal performance</div>
+    <div class="tip">Use <code>classification_report</code> from scikit-learn for insights</div>
+    <div class="tip">Handle class imbalance with techniques like SMOTE or class weights</div>
+
+    <h2>🧪 Pre-run Tests and Checks:</h2>
+    <ul>
+      <li>Ensure data is clean and well-preprocessed</li>
+      <li>Check for class imbalance and apply techniques to handle it</li>
+      <li>Split data into training and testing sets</li>
+      <li>Perform hyperparameter tuning using GridSearchCV</li>
+    </ul>
+
+    <h2>🧠 Naive Bayes with Hyperparameter Tuning (Python Example)</h2>
+    <pre><code>
+import numpy as np
+import pandas as pd
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import classification_report
+
+# Generate simulated text data
+X, y = make_classification(n_samples=1000, n_features=20, n_classes=2, random_state=42)
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(["Sample text data"] * 1000).toarray()
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Define the model and hyperparameter grid
+model = MultinomialNB()
+param_grid = {
+    'alpha': [0.1, 0.5, 1.0],
+    'fit_prior': [True, False]
+}
+
+# Perform hyperparameter tuning using GridSearchCV
+grid_search = GridSearchCV(model, param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+# Get the best model and evaluate on the test set
+best_model = grid_search.best_estimator_
+y_pred = best_model.predict(X_test)
+report = classification_report(y_test, y_pred)
+
+print("Best Parameters:", grid_search.best_params_)
+print("Classification Report:
+", report)
+    </code></pre>
+
+    <h2>📊 Evaluation Summary:</h2>
+    <p><strong>Best Parameters:</strong> {'alpha': 0.1, 'fit_prior': True}</p>
+    <p><strong>Test Accuracy:</strong> 0.30</p>
+    <pre><code>              precision    recall  f1-score   support
+
+           0       0.47      1.00      0.63        93
+           1       0.00      0.00      0.00       107
+
+    accuracy                           0.47       200
+   macro avg       0.23      0.50      0.32       200
+weighted avg       0.22      0.47      0.30       200
+</code></pre>
+  </div>
+</body>
+</html>

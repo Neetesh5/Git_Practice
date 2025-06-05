@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Time Series Model Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+    }
+    h2 {
+      color: #34495e;
+      margin-top: 30px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: green;
+    }
+    .avoid li::before {
+      content: "❌";
+      color: red;
+    }
+    .tip {
+      background: #fef9e7;
+      padding: 10px;
+      border-left: 5px solid #f1c40f;
+      margin: 10px 0;
+    }
+    code {
+      background: #ecf0f1;
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+    pre {
+      background: #ecf0f1;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📈 Time Series Model Checklist</h1>
+    <p><em>A visual guide to know when and how to use Time Series models in Machine Learning</em></p>
+
+    <h2>✅ Use Time Series Models When:</h2>
+    <ul>
+      <li>Data is sequential (e.g., daily, monthly, yearly)</li>
+      <li>Seasonality exists (trends or repeating cycles)</li>
+      <li>Forecasting future values based on past data</li>
+      <li>Autocorrelation is present (past values influence future)</li>
+      <li>Time-dependent features like lags or moving averages</li>
+      <li>Stationarity is checked (ADF, KPSS tests)</li>
+      <li>Transformations like differencing or logging are applied</li>
+      <li>Missing dates are handled or imputed</li>
+      <li>Irregular intervals are resampled or aggregated</li>
+    </ul>
+
+    <h2 class="avoid">❌ Avoid Time Series Models If:</h2>
+    <ul class="avoid">
+      <li>Observations are independent and identically distributed (IID)</li>
+      <li>No time dependence or temporal structure in the data</li>
+      <li>Use traditional ML models instead for IID data</li>
+    </ul>
+
+    <h2>💡 Best Practices:</h2>
+    <div class="tip">Visualize your data: plot trends, seasonality, and outliers</div>
+    <div class="tip">Check stationarity using ADF or KPSS tests</div>
+    <div class="tip">Apply transformations like differencing or log if needed</div>
+    <div class="tip">Handle missing data using imputation (mean, median, etc.)</div>
+    <div class="tip">Resample irregular intervals to regular frequency</div>
+    <div class="tip">Try multiple models: ARIMA, SARIMA, Exponential Smoothing, Prophet, LSTM</div>
+
+    <h2>🧠 Python Example (ARIMA):</h2>
+    <pre><code>
+from statsmodels.tsa.arima.model import ARIMA
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load time series data
+data = pd.read_csv('your_timeseries.csv', index_col='Date', parse_dates=True)
+data = data.asfreq('D')  # Ensure regular frequency
+
+# Fit ARIMA model
+model = ARIMA(data['value'], order=(1,1,1))
+model_fit = model.fit()
+
+# Forecast
+forecast = model_fit.forecast(steps=30)
+forecast.plot()
+plt.title('30-Day Forecast')
+plt.show()
+    </code></pre>
+  </div>
+</body>
+</html>

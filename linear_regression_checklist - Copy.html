@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Combined ML Model Checklists - Part 1</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f6f8;
+      color: #333;
+      margin: 20px;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      color: #2c3e50;
+    }
+    h2 {
+      margin-top: 40px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: green;
+    }
+    .avoid li::before {
+      content: "❌";
+      color: red;
+    }
+    .tip {
+      background: #fef9e7;
+      padding: 10px;
+      border-left: 5px solid #f1c40f;
+      margin: 10px 0;
+    }
+    code, pre {
+      background: #ecf0f1;
+      padding: 5px;
+      border-radius: 5px;
+      display: block;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Combined Machine Learning Model Checklists - Part 1</h1>
+
+    <h2>⚡ AdaBoost Model Checklist</h2>
+    <ul>
+      <li>Use with weak learners like shallow trees</li>
+      <li>Good for reducing bias in underfitting models</li>
+      <li>Works well with clean, tabular data</li>
+    </ul>
+    <div class="avoid">
+      <ul>
+        <li>Slow on large datasets</li>
+        <li>Not ideal for noisy data or high variance learners</li>
+      </ul>
+    </div>
+    <div class="tip">Use DecisionTreeClassifier(max_depth=1) as base estimator</div>
+
+    <h2>🐱 CatBoost Model Checklist</h2>
+    <ul>
+      <li>Handles categorical features natively</li>
+      <li>Efficient on large datasets</li>
+      <li>Performs well with missing values</li>
+    </ul>
+    <div class="avoid">
+      <ul>
+        <li>Not ideal for small datasets</li>
+        <li>Less interpretable than simpler models</li>
+      </ul>
+    </div>
+    <div class="tip">Use cat_features parameter and tune depth, learning_rate</div>
+
+    <h2>🌳 Decision Tree Model Checklist</h2>
+    <ul>
+      <li>Easy to interpret and visualize</li>
+      <li>Handles both numerical and categorical data</li>
+      <li>Robust to outliers and missing values</li>
+    </ul>
+    <div class="avoid">
+      <ul>
+        <li>Prone to overfitting</li>
+        <li>Not ideal for high-dimensional sparse data</li>
+      </ul>
+    </div>
+    <div class="tip">Use pruning and tune max_depth, min_samples_split</div>
+  </div>
+</body>
+</html>
